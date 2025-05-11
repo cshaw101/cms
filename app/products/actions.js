@@ -19,3 +19,13 @@ export async function addProduct(product) {
 
   return data
 }
+
+export async function deleteProduct(id) {
+  const supabase = createClient()
+  const { error } = await supabase.from('products').delete().eq('id', id)
+  
+  if (error) {
+    console.error('Supabase delete error:', error)
+    throw new Error(error.message)
+  }
+}

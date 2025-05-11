@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { getProducts, addProduct } from '../products/actions'
+import { getProducts, addProduct, deleteProduct  } from '../products/actions'
 
 export default function ProductTable() {
   const [products, setProducts] = useState([])
@@ -35,6 +35,14 @@ export default function ProductTable() {
       console.error('Error adding product:', err)
     }
   }
+  async function handleDeleteProduct(id) {
+  try {
+    await deleteProduct(id)
+    await fetchProducts()
+  } catch (err) {
+    console.error('Error deleting product:', err)
+  }
+}
 
   return (
     <div>
@@ -82,6 +90,7 @@ export default function ProductTable() {
             <th className="text-left">Price</th>
             <th className="text-left">Description</th>
             <th className="text-left">Stock</th>
+            <th className="text-left">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -91,6 +100,14 @@ export default function ProductTable() {
               <td>${p.price}</td>
               <td>{p.description}</td>
               <td>{p.stock}</td>
+               <td>
+               <button
+                 onClick={() => handleDeleteProduct(p.id)}
+                  className="text-red-600 hover:underline"
+                  >
+                   Delete
+               </button>
+              </td> 
             </tr>
           ))}
         </tbody>
